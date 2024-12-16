@@ -9,6 +9,8 @@ public class ReloadEnemy1 : MonoBehaviour
     private NPCMovement1 enemyScript; // Referência ao script do inimigo
     private float respawnDelay = 3f;
     private bool isRespawning = false;
+    private GameObject barraVida;
+
 
     void Start()
     {
@@ -39,6 +41,7 @@ public class ReloadEnemy1 : MonoBehaviour
             Debug.LogError("Nenhum objeto com a tag 'point' foi encontrado!");
             return;
         }
+        barraVida = GameObject.FindWithTag("vidaEnemy2");
     }
 
     void Update()
@@ -61,6 +64,7 @@ public class ReloadEnemy1 : MonoBehaviour
             enemyScript.isDead = false;
             enemyScript.timeDeath = 1.5f;
             enemyScript.vida = 100;
+            barraVida.SetActive(true);
         }
 
         // Move o inimigo para o ponto de spawn

@@ -9,6 +9,8 @@ public class ReloadEnemy : MonoBehaviour
     private NPCMovement enemyScript; // Referência ao script do inimigo
     private float respawnDelay = 3f;
     private bool isRespawning = false;
+    private GameObject barraVida;
+
 
     void Start()
     {
@@ -39,6 +41,7 @@ public class ReloadEnemy : MonoBehaviour
             Debug.LogError("Nenhum objeto com a tag 'point' foi encontrado!");
             return;
         }
+        barraVida = GameObject.FindWithTag("vidaEnemy1");
     }
 
     void Update()
@@ -68,6 +71,7 @@ public class ReloadEnemy : MonoBehaviour
 
         // Reativa o inimigo
         currentEnemy.SetActive(true);
+        barraVida.SetActive(true);
         Debug.Log("Inimigo reativado!");
 
         isRespawning = false; // Permite novos respawns no futuro

@@ -25,11 +25,17 @@ TagManager:
   - enemy2
   - point2
   - pointfire2
+  - foguete
+  - AttackFire
+  - pointAttackFire
+  - vidaIdle
+  - vidaEnemy1
+  - vidaEnemy2
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Nave
   - Water
   - UI
   - Enemy

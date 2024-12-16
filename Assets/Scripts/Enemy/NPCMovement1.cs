@@ -11,7 +11,7 @@ public class NPCMovement1 : MonoBehaviour
     private GameObject PontoFire;
     private Transform spawnPoint;
     private float vel = 2f;
-    [SerializeField] private bool move,time = false;
+    private bool move,time = false;
     public float vida = 100;
     private Animator animator;
     private Rigidbody2D rb;
@@ -23,17 +23,16 @@ public class NPCMovement1 : MonoBehaviour
     private int count = 500;
     private int jumpForce = 12;
     private int jump = 2;
-    [SerializeField] private bool canAttack = false;
+    private bool canAttack = false;
     private float attackCooldown = 1.5f;
     private float moveRange = 8f;
-    [SerializeField] private float attackTimer = 0f;
-    [SerializeField] private bool jumpBool = false;
-    [SerializeField] private float distance;
-    [SerializeField] private bool damage = false;
-    [SerializeField] private float timeNew = 0.5f;
+    private float attackTimer = 0f;
+    private bool jumpBool = false;
+    private float distance;
+    private float timeNew = 0.5f;
     public float timeDeath = 1.5f;
     public bool isDead = false;
-
+    private GameObject barraVida;
 
     private void Start()
     {
@@ -45,7 +44,13 @@ public class NPCMovement1 : MonoBehaviour
         spawnPoint=Point.GetComponent<Transform>(); 
         Enemy2 = GameObject.FindWithTag("enemy2");
         PontoFire = GameObject.FindWithTag("pointfire2");
+        barraVida = GameObject.FindWithTag("vidaEnemy2");
 
+    }
+
+    public float GetVida()
+    {
+        return vida;
     }
     private void Update()
     {
@@ -61,12 +66,6 @@ public class NPCMovement1 : MonoBehaviour
                 JumpForce();
                 MoveNPC();
             }
-
-            /*if (damage)
-            {
-                tomarDano(10);
-                damage = false;
-            }*/
 
             dieNPC(vida);
 
@@ -130,11 +129,6 @@ public class NPCMovement1 : MonoBehaviour
             animator.SetBool(attackEHash, false);
             animator.SetBool(idleEHash, false);
         }
-
-        /*if (collision.gameObject.CompareTag("espada"))
-        {
-            damage = true;
-        }*/
     }
 
     public void tomarDano(float dano)
@@ -181,7 +175,8 @@ public class NPCMovement1 : MonoBehaviour
             timeDeath-=Time.deltaTime;
             if (timeDeath < 0)
             {
-                OnEnemyDeath(Enemy2);   
+                OnEnemyDeath(Enemy2);
+                barraVida.SetActive(false);
             }
             
             return;

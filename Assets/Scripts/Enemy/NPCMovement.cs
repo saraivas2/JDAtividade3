@@ -11,7 +11,7 @@ public class NPCMovement : MonoBehaviour
     private GameObject PontoFire;
     private Transform spawnPoint;
     private float vel = 2f;
-    [SerializeField] private bool move,time = false;
+    private bool move,time = false;
     public float vida = 100;
     private Animator animator;
     private Rigidbody2D rb;
@@ -23,16 +23,16 @@ public class NPCMovement : MonoBehaviour
     private int count = 500;
     private int jumpForce = 12;
     private int jump = 2;
-    [SerializeField] private bool canAttack = false;
+    private bool canAttack = false;
     private float attackCooldown = 1.5f;
     private float moveRange = 8f;
-    [SerializeField] private float attackTimer = 0f;
-    [SerializeField] private bool jumpBool = false;
-    [SerializeField] private float distance;
-    [SerializeField] private bool damage = false;
-    [SerializeField] private float timeNew = 0.5f;
+    private float attackTimer = 0f;
+    private bool jumpBool = false;
+    private float distance;
+    private float timeNew = 0.5f;
     public float timeDeath = 1.5f;
     public bool isDead = false;
+    private GameObject barraVida;
 
 
     private void Start()
@@ -45,6 +45,7 @@ public class NPCMovement : MonoBehaviour
         spawnPoint=Point.GetComponent<Transform>(); 
         Enemy = GameObject.FindWithTag("enemies");
         PontoFire = GameObject.FindWithTag("pointfire");
+        barraVida = GameObject.FindWithTag("vidaEnemy1");
 
     }
     private void Update()
@@ -137,6 +138,12 @@ public class NPCMovement : MonoBehaviour
         }*/
     }
 
+    public float GetVida()
+    {
+        return vida;
+    }
+
+
     public void tomarDano(float dano)
     {
         vida-= dano;
@@ -181,7 +188,8 @@ public class NPCMovement : MonoBehaviour
             timeDeath-=Time.deltaTime;
             if (timeDeath < 0)
             {
-                OnEnemyDeath(Enemy);   
+                OnEnemyDeath(Enemy); 
+                barraVida.SetActive(false);
             }
             
             return;
@@ -191,6 +199,7 @@ public class NPCMovement : MonoBehaviour
     public void OnEnemyDeath(GameObject enemy)
     {
         enemy.SetActive(false);
+        
     }
 
     public void MoveNPC()
