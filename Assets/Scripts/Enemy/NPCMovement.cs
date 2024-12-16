@@ -33,6 +33,7 @@ public class NPCMovement : MonoBehaviour
     public float timeDeath = 1.5f;
     public bool isDead = false;
     private GameObject barraVida;
+    private Recompensas recompenas;
 
 
     private void Start()
@@ -46,6 +47,7 @@ public class NPCMovement : MonoBehaviour
         Enemy = GameObject.FindWithTag("enemies");
         PontoFire = GameObject.FindWithTag("pointfire");
         barraVida = GameObject.FindWithTag("vidaEnemy1");
+        recompenas = GetComponent<Recompensas>();
 
     }
     private void Update()
@@ -158,6 +160,10 @@ public class NPCMovement : MonoBehaviour
             animator.SetBool(attackEHash, false);
             animator.SetBool(idleEHash, true);
         }
+        if (collision.CompareTag("AttackFire"))
+        {
+            tomarDano(10);
+        }
     }
     private void JumpForce()
     {
@@ -190,6 +196,8 @@ public class NPCMovement : MonoBehaviour
             {
                 OnEnemyDeath(Enemy); 
                 barraVida.SetActive(false);
+                recompenas.InstantiateLife();
+                recompenas.InstantiateFoods();
             }
             
             return;

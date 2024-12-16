@@ -31,6 +31,8 @@ TagManager:
   - vidaIdle
   - vidaEnemy1
   - vidaEnemy2
+  - life
+  - food
   layers:
   - Default
   - TransparentFX

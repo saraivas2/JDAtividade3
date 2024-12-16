@@ -23,6 +23,7 @@ public class player : MonoBehaviour
     private int jumpUpHash = Animator.StringToHash("jumpUp");
     private int jumpDownHash = Animator.StringToHash("jumpDown");
     private int idleHash = Animator.StringToHash("idle");
+    private int attackfireplyer = Animator.StringToHash("attackfire");
     private int vida = 100;
     private float valorUp = 0;
     private bool damage = false;
@@ -42,6 +43,8 @@ public class player : MonoBehaviour
     private bool chuvafogo = false;
     int valor = 10;
     public float tempoVidaFire = 0.3f;
+    private float Updamage = 0;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +79,25 @@ public class player : MonoBehaviour
         {
             jump = 2;
             bool_jump = false;
+        }
+
+        if (collision.gameObject.CompareTag("food"))
+        {
+            Updamage += 1;
+            if (Updamage > 20)
+            {
+                Updamage = 20;  
+            }
+            Destroy(collision.gameObject);
+        }
+        if (collision.gameObject.CompareTag("life"))
+        {
+            vida += 50;
+            if (vida > 100)
+            {
+                vida = 100;
+            }
+            Destroy(collision.gameObject); 
         }
     }
 
@@ -171,6 +193,7 @@ public class player : MonoBehaviour
         animator.SetBool(jumpDownHash, false);
         animator.SetBool(deathHash, false);
         animator.SetBool(idleHash, false);
+        animator.SetBool(attackfireplyer, false);
         
     }
 
@@ -187,6 +210,7 @@ public class player : MonoBehaviour
         animator.SetBool(jumpDownHash, bool_jump==true && espada== false && bool_jumpUp == false);
         animator.SetBool(deathHash, false);
         animator.SetBool(idleHash, false);
+        animator.SetBool(attackfireplyer, false);
     }
 
 
@@ -198,7 +222,8 @@ public class player : MonoBehaviour
         animator.SetBool(jumpDownHash, false);
         animator.SetBool(deathHash, false);
         animator.SetBool(idleHash, false);
-        
+        animator.SetBool(attackfireplyer, false);
+
     }
 
 
@@ -211,7 +236,8 @@ public class player : MonoBehaviour
         animator.SetBool(jumpDownHash, false);
         animator.SetBool(deathHash, death==true);
         animator.SetBool(idleHash, false);
-        
+        animator.SetBool(attackfireplyer, false);
+
         Invoke("ReloadScene", 3f);
     }
 
@@ -227,7 +253,18 @@ public class player : MonoBehaviour
         animator.SetBool(jumpDownHash, false);
         animator.SetBool(deathHash, false);
         animator.SetBool(idleHash, true);
+        animator.SetBool(attackfireplyer, false);
 
+    }
+    private void AttackFirePlayer()
+    {
+        animator.SetBool(runPlayerHash, false);
+        animator.SetBool(attack1Hash, false);
+        animator.SetBool(jumpUpHash, false);
+        animator.SetBool(jumpDownHash, false);
+        animator.SetBool(deathHash, false);
+        animator.SetBool(idleHash, false);
+        animator.SetBool(attackfireplyer, true);
     }
     private bool jumpUp(float altura)
     {
@@ -252,7 +289,6 @@ public class player : MonoBehaviour
             val = val * -1;
             Vector3 pointVector = point.transform.position;
             Instantiate(AttackFire, new Vector3(pointVector.x + val, pointVector.y, pointVector.z), Quaternion.identity);
-            Collider2D[] isAttackFire = Physics2D.OverlapCircleAll(AttackFire.transform.position, radius, EnemyLayer);
 
             if (val > 0)
             {
@@ -261,18 +297,6 @@ public class player : MonoBehaviour
             else
             {
                 val -= 0.3f;
-            }
-
-            foreach (Collider2D col in isAttackFire)
-            {
-                if (col.CompareTag("enemies"))
-                {
-                    col.transform.GetComponent<NPCMovement>().tomarDano(20);
-                }
-                if (col.CompareTag("enemy2"))
-                {
-                    col.transform.GetComponent<NPCMovement1>().tomarDano(20);
-                }
             }
         }
         return valor-1;
@@ -324,11 +348,11 @@ public class player : MonoBehaviour
                 {
                     if (col.CompareTag("enemies"))
                     {
-                        col.transform.GetComponent<NPCMovement>().tomarDano(5);
+                        col.transform.GetComponent<NPCMovement>().tomarDano(5+Updamage);
                     }
                     else if (col.CompareTag("enemy2"))
                     {
-                        col.transform.GetComponent<NPCMovement1>().tomarDano(5);
+                        col.transform.GetComponent<NPCMovement1>().tomarDano(5+Updamage);
                     }
                 }
                 timeAttack = 0.2f;
@@ -342,7 +366,13 @@ public class player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.RightShift))
         {
-            chuvafogo = true;
+            if (Updamage >= 0)
+            {
+                vida -= 5;
+                AttackFirePlayer();
+                chuvafogo = true;
+                
+            }
         }
     }    
 }
