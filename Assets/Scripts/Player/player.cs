@@ -371,7 +371,7 @@ public class player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.RightShift))
         {
-            if (Updamage >= 0)
+            if (Updamage >=20 )
             {
                 vida -= 5;
                 AttackFirePlayer();
