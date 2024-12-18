@@ -44,6 +44,7 @@ public class player : MonoBehaviour
     int valor = 10;
     public float tempoVidaFire = 0.3f;
     private float Updamage = 0;
+    private GameOverScript gameover;
     
 
     // Start is called before the first frame update
@@ -60,6 +61,7 @@ public class player : MonoBehaviour
         Enemy2 = GameObject.FindWithTag("enemy2");
         point = GameObject.FindWithTag("pointAttackFire");
         barraVida = GameObject.FindWithTag("vidaIdle");
+        gameover = GameObject.Find("TelaGameOver").GetComponent<GameOverScript>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -238,7 +240,10 @@ public class player : MonoBehaviour
         animator.SetBool(idleHash, false);
         animator.SetBool(attackfireplyer, false);
 
+        bool resp = gameover.ShowTelaGameOver(true);
+
         Invoke("ReloadScene", 3f);
+        
     }
 
     private void ReloadScene()
