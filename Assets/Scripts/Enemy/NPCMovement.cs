@@ -134,10 +134,10 @@ public class NPCMovement : MonoBehaviour
             animator.SetBool(idleEHash, false);
         }
 
-        /*if (collision.gameObject.CompareTag("espada"))
+        if (collision.CompareTag("AttackFire"))
         {
-            damage = true;
-        }*/
+            tomarDano(5);
+        }
     }
 
     public float GetVida()
@@ -160,10 +160,7 @@ public class NPCMovement : MonoBehaviour
             animator.SetBool(attackEHash, false);
             animator.SetBool(idleEHash, true);
         }
-        if (collision.CompareTag("AttackFire"))
-        {
-            tomarDano(10);
-        }
+        
     }
     private void JumpForce()
     {

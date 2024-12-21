@@ -4,6 +4,7 @@ using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using UnityEngine.Rendering;
 
 
 public class player : MonoBehaviour
@@ -85,7 +86,7 @@ public class player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("food"))
         {
-            Updamage += 1;
+            Updamage += 1f;
             if (Updamage > 20)
             {
                 Updamage = 20;  
@@ -94,7 +95,7 @@ public class player : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("life"))
         {
-            vida += 50;
+            vida += 20;
             if (vida > 100)
             {
                 vida = 100;
@@ -285,6 +286,10 @@ public class player : MonoBehaviour
         }
     }
 
+    public float GetPowerPlayer()
+    {
+        return Updamage;
+    }
     private int ChuvaFogo(int valor)
     {
         float val = 0.5f;
@@ -353,11 +358,11 @@ public class player : MonoBehaviour
                 {
                     if (col.CompareTag("enemies"))
                     {
-                        col.transform.GetComponent<NPCMovement>().tomarDano(5+Updamage);
+                        col.transform.GetComponent<NPCMovement>().tomarDano(5+(Updamage/2));
                     }
                     else if (col.CompareTag("enemy2"))
                     {
-                        col.transform.GetComponent<NPCMovement1>().tomarDano(5+Updamage);
+                        col.transform.GetComponent<NPCMovement1>().tomarDano(5+(Updamage/2));
                     }
                 }
                 timeAttack = 0.2f;
@@ -373,7 +378,8 @@ public class player : MonoBehaviour
         {
             if (Updamage >=20 )
             {
-                vida -= 5;
+                Updamage -= 19;
+                vida -= 10;
                 AttackFirePlayer();
                 chuvafogo = true;
                 

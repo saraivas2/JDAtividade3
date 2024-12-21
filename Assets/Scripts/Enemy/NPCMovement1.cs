@@ -133,7 +133,7 @@ public class NPCMovement1 : MonoBehaviour
 
         if (collision.CompareTag("AttackFire"))
         {
-            tomarDano(10);
+            tomarDano(5);
         }
     }
 
