@@ -28,24 +28,24 @@ public class player : MonoBehaviour
     private int vida = 100;
     private float valorUp = 0;
     private bool damage = false;
-    private GameObject Player;
-    private GameObject Fire;
-    private Collider2D isAttack;
+    public GameObject Player;
+    public GameObject Fire;
+    public Collider2D isAttack;
     public float radius;
     public LayerMask EnemyLayer;
     private float timeAttack = 0.2f;
     private float timeAttackFire = 0f;
     private float altura;
-    private GameObject AttackFire;
-    private GameObject Enemy;
-    private GameObject Enemy2;
-    private GameObject point;
-    private GameObject barraVida;
+    public GameObject AttackFire;
+    public GameObject Enemy;
+    public GameObject Enemy2;
+    public GameObject point;
+    public GameObject barraVida;
     private bool chuvafogo = false;
     int valor = 10;
     public float tempoVidaFire = 0.3f;
     private float Updamage = 0;
-    private GameOverScript gameover;
+    public GameOverScript gameover;
     
 
     // Start is called before the first frame update
@@ -53,16 +53,6 @@ public class player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();   
         animator = GetComponent<Animator>();
-        Fire = Resources.Load("FireObjeto") as GameObject;
-        Player = GameObject.FindWithTag("idle");
-        GameObject attackObject = GameObject.FindWithTag("espada");
-        isAttack=attackObject.GetComponent<Collider2D>();
-        AttackFire = Resources.Load("Fogo") as GameObject;
-        Enemy = GameObject.FindWithTag("enemies");
-        Enemy2 = GameObject.FindWithTag("enemy2");
-        point = GameObject.FindWithTag("pointAttackFire");
-        barraVida = GameObject.FindWithTag("vidaIdle");
-        gameover = GameObject.Find("TelaGameOver").GetComponent<GameOverScript>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -87,10 +77,6 @@ public class player : MonoBehaviour
         if (collision.gameObject.CompareTag("food"))
         {
             Updamage += 1f;
-            if (Updamage > 20)
-            {
-                Updamage = 20;  
-            }
             Destroy(collision.gameObject);
         }
         if (collision.gameObject.CompareTag("life"))
@@ -149,6 +135,12 @@ public class player : MonoBehaviour
                 JumpPlayer();
             }
 
+            
+            if (Updamage > 20)
+            {
+                Updamage = 20;
+            }
+            
             if (damage)
             {
                 vida = vida - 10;

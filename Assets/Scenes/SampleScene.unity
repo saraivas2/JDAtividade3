@@ -405,7 +405,7 @@ Transform:
   m_GameObject: {fileID: 126847321}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -288, y: 89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1511,9 +1511,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fca0d5a86d68f84f8cfb519a26a5a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 493129571}
+  Enemy2: {fileID: 393296727}
+  Fire: {fileID: 9011302395542357716, guid: a4ecf115ad8426e4984fa3e49d0399d7, type: 3}
+  PontoFire: {fileID: 1822438795}
+  spawnPoint: {fileID: 882827263}
   vida: 100
   timeDeath: 1.5
   isDead: 0
+  barraVida: {fileID: 673426349}
+  recompensas: {fileID: 393296735}
 --- !u!114 &393296735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1888,10 +1895,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 855829165}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -346.00006, y: 243}
-  m_SizeDelta: {x: 40, y: 40}
+  m_AnchorMin: {x: 0.057000004, y: 0.8466778}
+  m_AnchorMax: {x: 0.10367578, y: 0.98}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &635808088
 MonoBehaviour:
@@ -3169,9 +3176,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2448e1e8d545e4b9a204b96bbcfd13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 493129571}
+  Enemy: {fileID: 907115257}
+  Fire: {fileID: 9011302395542357716, guid: a4ecf115ad8426e4984fa3e49d0399d7, type: 3}
+  PontoFire: {fileID: 2138904408}
+  spawnPoint: {fileID: 1378670786}
   vida: 100
   timeDeath: 1.5
   isDead: 0
+  barraVida: {fileID: 2074822629}
+  recompenas: {fileID: 907115266}
 --- !u!114 &907115265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3797,16 +3811,16 @@ RectTransform:
   m_GameObject: {fileID: 1084443807}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 254295796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -346.00006, y: 243}
-  m_SizeDelta: {x: 100, y: 10}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.019837886, y: 0.8935944}
+  m_AnchorMax: {x: 0.1536229, y: 0.9303223}
+  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_SizeDelta: {x: -1, y: -1}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1084443809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6239,6 +6253,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3807415511410219416, guid: 6e54d420fb026d84295bcca6278b01f9, type: 3}
+      propertyPath: m_Name
+      value: fogo2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3807415511410219416, guid: 6e54d420fb026d84295bcca6278b01f9, type: 3}
       propertyPath: m_TagString
       value: pointfire2
       objectReference: {fileID: 0}
@@ -7154,15 +7172,15 @@ RectTransform:
   m_GameObject: {fileID: 1994564172}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 277618953}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 34, y: 243}
-  m_SizeDelta: {x: -760, y: 10}
+  m_AnchorMin: {x: 0.019837888, y: 0.8932054}
+  m_AnchorMax: {x: 0.15235156, y: 0.933339}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -2}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1994564174
 MonoBehaviour:
@@ -12026,6 +12044,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3807415511410219416, guid: 6e54d420fb026d84295bcca6278b01f9, type: 3}
+      propertyPath: m_Name
+      value: fogo1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3807415511410219416, guid: 6e54d420fb026d84295bcca6278b01f9, type: 3}
       propertyPath: m_TagString
       value: pointfire
       objectReference: {fileID: 0}
@@ -12739,7 +12761,19 @@ PrefabInstance:
     - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
       propertyPath: Fire
       value: 
-      objectReference: {fileID: 9011302395542357716, guid: df9e197cc69ea644b9be93ef7a42b066, type: 3}
+      objectReference: {fileID: 9011302395542357716, guid: a4ecf115ad8426e4984fa3e49d0399d7, type: 3}
+    - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
+      propertyPath: Enemy
+      value: 
+      objectReference: {fileID: 907115257}
+    - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
+      propertyPath: point
+      value: 
+      objectReference: {fileID: 952999884}
+    - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
+      propertyPath: Enemy2
+      value: 
+      objectReference: {fileID: 393296727}
     - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
       propertyPath: Player
       value: 
@@ -12749,9 +12783,21 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
+      propertyPath: gameover
+      value: 
+      objectReference: {fileID: 751408648}
+    - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
       propertyPath: isAttack
       value: 
       objectReference: {fileID: 52444565}
+    - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
+      propertyPath: barraVida
+      value: 
+      objectReference: {fileID: 699394574}
+    - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
+      propertyPath: AttackFire
+      value: 
+      objectReference: {fileID: 4768947255516738804, guid: 74fa934d6d17a4948842a46276a6faa1, type: 3}
     - target: {fileID: 4701316615048293639, guid: 248aa4c9d8846424cbb2828016031074, type: 3}
       propertyPath: EnemyLayer.m_Bits
       value: 64

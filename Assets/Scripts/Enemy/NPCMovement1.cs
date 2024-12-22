@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class NPCMovement1 : MonoBehaviour
 {
-    private GameObject Player;
-    private GameObject Enemy2;
-    private GameObject Fire;
-    private GameObject PontoFire;
-    private Transform spawnPoint;
+    public GameObject Player;
+    public GameObject Enemy2;
+    public GameObject Fire;
+    public GameObject PontoFire;
+    public Transform spawnPoint;
     private float vel = 2f;
     private bool move,time = false;
     public float vida = 100;
@@ -32,21 +32,13 @@ public class NPCMovement1 : MonoBehaviour
     private float timeNew = 0.5f;
     public float timeDeath = 1.5f;
     public bool isDead = false;
-    private GameObject barraVida;
-    private Recompensas recompensas;
+    public GameObject barraVida;
+    public Recompensas recompensas;
 
     private void Start()
     {
         rb = GetComponentInChildren<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        Fire = Resources.Load("FireObjeto") as GameObject;
-        Player = GameObject.FindWithTag("idle");
-        GameObject Point = GameObject.FindWithTag("point2");
-        spawnPoint=Point.GetComponent<Transform>(); 
-        Enemy2 = GameObject.FindWithTag("enemy2");
-        PontoFire = GameObject.FindWithTag("pointfire2");
-        barraVida = GameObject.FindWithTag("vidaEnemy2");
-        recompensas = GetComponent<Recompensas>();
     }
 
     public float GetVida()
@@ -94,20 +86,22 @@ public class NPCMovement1 : MonoBehaviour
                 animator.SetBool(idleEHash, true);
             }
 
-            if (distance < attackCooldown)
+            if (distance <= attackCooldown)
             {
                 canAttack = true;
-                if (canAttack)
-                {
-                    AttackNPC();
-                    time = true;
-
-                }
             }
             else
             {
                 canAttack = false;
             }
+
+            if (canAttack)
+            {
+                AttackNPC();
+                time = true;
+            }
+
+
             if (time)
             {
                 timeNew = ObjectFire(timeNew);
@@ -181,8 +175,7 @@ public class NPCMovement1 : MonoBehaviour
             timeDeath-=Time.deltaTime;
             if (timeDeath < 0)
             {
-                OnEnemyDeath(Enemy2);
-                barraVida.SetActive(false);
+                OnEnemyDeath();
                 recompensas.InstantiateFoods();
                 recompensas.InstantiateLife();
             }
@@ -191,9 +184,10 @@ public class NPCMovement1 : MonoBehaviour
         }
     }
 
-    public void OnEnemyDeath(GameObject enemy)
+    public void OnEnemyDeath()
     {
-        enemy.SetActive(false);
+        barraVida.SetActive(false);
+        Enemy2.SetActive(false);
     }
 
     public void MoveNPC()
