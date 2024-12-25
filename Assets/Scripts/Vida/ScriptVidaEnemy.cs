@@ -7,11 +7,11 @@ using Unity.VisualScripting;
 
 public class ScriptVidaEnemy : MonoBehaviour
 {
-    private NPCMovement enemyScript;
+    public NPCMovement enemyScript;
     public GameObject game;
     public Transform barraVida;
-    public float valor;
-    public Vector3 diferenca;
+    private float valor;
+    private Vector3 diferenca;
 
 
     private void Start()
@@ -25,9 +25,7 @@ public class ScriptVidaEnemy : MonoBehaviour
     void Update()
     {
         transform.position = game.transform.position - new Vector3(diferenca.x + 0.15f, diferenca.y - 0.3f, diferenca.z);
-
-        enemyScript = GameObject.Find("Enemy").GetComponent<NPCMovement>();
-        
+      
         float vida = enemyScript.GetVida();
         float barra = barraVida.transform.localScale.x;
 

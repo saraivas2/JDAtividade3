@@ -14,8 +14,8 @@ public class player : MonoBehaviour
     private Vector3 posicao;
     private Rigidbody2D rb;
     private int jump = 2;
-    private int forca = 90;
-    public bool move, espada,death = false;
+    public int forca = 80;
+    private bool move, espada,death = false;
     private bool bool_jump, bool_jumpUp = false;
     private Animator animator;
     private int runPlayerHash = Animator.StringToHash("runPlayer");
@@ -30,7 +30,6 @@ public class player : MonoBehaviour
     private bool damage = false;
     public GameObject Player;
     public GameObject Fire;
-    public Collider2D isAttack;
     public float radius;
     public LayerMask EnemyLayer;
     private float timeAttack = 0.2f;
@@ -38,17 +37,14 @@ public class player : MonoBehaviour
     private float altura;
     public GameObject AttackFire;
     public GameObject Enemy;
-    public GameObject Enemy2;
     public GameObject point;
     public GameObject barraVida;
     private bool chuvafogo = false;
-    int valor = 10;
-    public float tempoVidaFire = 0.3f;
+    private int valor = 10;
+    private float tempoVidaFire = 0.3f;
     private float Updamage = 0;
     public GameOverScript gameover;
     
-
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();   
@@ -72,6 +68,7 @@ public class player : MonoBehaviour
         {
             jump = 2;
             bool_jump = false;
+
         }
 
         if (collision.gameObject.CompareTag("food"))
@@ -118,8 +115,15 @@ public class player : MonoBehaviour
         }
 
     }
-    
-    
+
+    private void FixedUpdate()
+    {
+        if (!death)
+        {
+            movimentPlayer();
+        }
+   
+    }
     // Update is called once per frame
     void Update()
     {
@@ -303,60 +307,79 @@ public class player : MonoBehaviour
         }
         return valor-1;
     }
-    void comando()
+
+    private void OnDrawGizmos()
     {
+        if (espada)
+        {
+            Gizmos.color = Color.red;
+            Vector3 attackPosition = Player.transform.position + transform.right * 0.5f;
+            Gizmos.DrawWireSphere(attackPosition, radius);
+
+        }
+    }
+    void movimentPlayer()
+    {
+        float moveDirection = 0;
+
         if (Input.GetKey(KeyCode.RightArrow))
         {
+            moveDirection = 1;
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
-            transform.Translate(new Vector2(vel * Time.deltaTime, 0));
             move = true;
             movePlayer();
-            
-        } else if (Input.GetKey(KeyCode.LeftArrow))
+
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow))
         {
+            moveDirection = -1;
             transform.eulerAngles = new Vector3(0f, 180f, 0f);
-            transform.Translate(new Vector2(vel * Time.deltaTime, 0));
             move = true;
             movePlayer();
+
         }
         else
         {
             move = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) & (jump > 1 & jump <= 2))
-            {
-                jump--;
-                bool_jump = true; 
-                rb.AddForce(new Vector2(0, 2 * forca), ForceMode2D.Force);
+        rb.velocity = new Vector2(moveDirection * vel, rb.velocity.y);
+    }
+    
+    void comando()
+    {
+      if (Input.GetKeyDown(KeyCode.UpArrow) & (jump > 0 & jump <= 2))
+        {
+            jump--;
+            bool_jump = true; 
+            rb.AddForce(new Vector2(0, forca*Time.fixedDeltaTime), ForceMode2D.Impulse);
                 
         }
         else
         {
             bool_jump = false;
+            
         }
-
-               
 
         if (Input.GetKey(KeyCode.DownArrow))
         {
             espada = true;
             AttackPlayer();
             timeAttack -= Time.deltaTime;
+
             if (timeAttack < 0)
             {
-                Collider2D[] isAttack = Physics2D.OverlapCircleAll(Player.transform.position, radius, EnemyLayer);
+                Vector3 attackPosition = Player.transform.position + transform.right * 0.5f; 
+                Collider2D[] isAttack = Physics2D.OverlapCircleAll(attackPosition, radius, EnemyLayer);
+
                 foreach (Collider2D col in isAttack)
                 {
                     if (col.CompareTag("enemies"))
                     {
-                        col.transform.GetComponent<NPCMovement>().tomarDano(5+(Updamage/2));
-                    }
-                    else if (col.CompareTag("enemy2"))
-                    {
-                        col.transform.GetComponent<NPCMovement1>().tomarDano(5+(Updamage/2));
+                        col.transform.GetComponent<NPCMovement>().tomarDano(5 + (Updamage / 4));
                     }
                 }
+
                 timeAttack = 0.2f;
             }
         }
@@ -364,7 +387,6 @@ public class player : MonoBehaviour
         {
             espada = false;
         }
-
 
         if (Input.GetKeyDown(KeyCode.RightShift))
         {

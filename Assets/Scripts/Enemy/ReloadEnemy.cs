@@ -4,44 +4,35 @@ using UnityEngine;
 
 public class ReloadEnemy : MonoBehaviour
 {
-    private Transform spawnPoint;
-    private GameObject currentEnemy;
-    private NPCMovement enemyScript; // Referência ao script do inimigo
-    private float respawnDelay = 3f;
+    public Transform spawnPoint;
+    public GameObject currentEnemy;
+    public NPCMovement enemyScript; 
+    private float respawnDelay = 45f;
     private bool isRespawning = false;
-    private GameObject barraVida;
+    public GameObject barraVida;
 
 
     void Start()
     {
-        // Localiza o inimigo na cena
-        currentEnemy = GameObject.FindWithTag("enemies");
+        
         if (currentEnemy == null)
         {
             Debug.LogError("GameObject com a tag 'enemies' não foi encontrado!");
             return;
         }
 
-        // Obtenha o script do inimigo
-        enemyScript = GameObject.Find("Enemy").GetComponent<NPCMovement>();
         if (enemyScript == null)
         {
             Debug.LogError("O script NPCMovement não foi encontrado no inimigo!");
             return;
         }
 
-        // Localiza o ponto de spawn
-        GameObject Point = GameObject.FindWithTag("point");
-        if (Point != null)
-        {
-            spawnPoint = Point.transform;
-        }
-        else
+        if (spawnPoint == null)
         {
             Debug.LogError("Nenhum objeto com a tag 'point' foi encontrado!");
             return;
         }
-        barraVida = GameObject.FindWithTag("vidaEnemy1");
+       
     }
 
     void Update()
@@ -56,25 +47,30 @@ public class ReloadEnemy : MonoBehaviour
 
     IEnumerator RespawnEnemy()
     {
-        yield return new WaitForSeconds(respawnDelay); // Aguarda o tempo de respawn
+        yield return new WaitForSeconds(respawnDelay); 
 
-        // Reinicializa as variáveis do inimigo
         if (enemyScript != null)
         {
             enemyScript.isDead = false;
-            enemyScript.timeDeath = 1.5f;
+            enemyScript.timeDeath = 0.2f;
             enemyScript.vida = 100;
+            enemyScript.attackTimer = 0f;
+            enemyScript.jumpBool = false;
+            enemyScript.jump = 2;
+            enemyScript.count = 500;
+            enemyScript.move = false;
+            enemyScript.time = false;
+            enemyScript.timeNew = 0.5f;
+            enemyScript.attackCooldown = 3.0f;
         }
 
-        // Move o inimigo para o ponto de spawn
         currentEnemy.transform.position = spawnPoint.position;
 
-        // Reativa o inimigo
         currentEnemy.SetActive(true);
         barraVida.SetActive(true);
         Debug.Log("Inimigo reativado!");
 
-        isRespawning = false; // Permite novos respawns no futuro
+        isRespawning = false; 
     }
 }
 

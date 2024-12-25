@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+using UnityEngine.EventSystems;
 
 public class NPCMovement : MonoBehaviour
 {
@@ -9,9 +11,8 @@ public class NPCMovement : MonoBehaviour
     public GameObject Enemy;
     public GameObject Fire;
     public GameObject PontoFire;
-    public Transform spawnPoint;
-    private float vel = 2f;
-    private bool move,time = false;
+    public float vel = 2f;
+    public bool move,time = false;
     public float vida = 100;
     private Animator animator;
     private Rigidbody2D rb;
@@ -20,25 +21,26 @@ public class NPCMovement : MonoBehaviour
     private int jumpEHash = Animator.StringToHash("jumpE");
     private int attackEHash = Animator.StringToHash("attackE");
     private int idleEHash = Animator.StringToHash("idle");
-    private int count = 500;
-    private int jumpForce = 12;
-    private int jump = 2;
+    public int count = 500;
+    private int jumpForce = 90;
+    public int jump = 2;
     private bool canAttack = false;
-    private float attackCooldown = 1.5f;
+    public float attackCooldown = 3.0f;
     private float moveRange = 8f;
-    private float attackTimer = 0f;
-    private bool jumpBool = false;
+    public float attackTimer = 0f;
+    public bool jumpBool = false;
     private float distance;
-    private float timeNew = 0.5f;
-    public float timeDeath = 1.5f;
+    public float timeNew = 0.5f;
+    public float timeDeath = 0.2f;
     public bool isDead = false;
     public GameObject barraVida;
     public Recompensas recompenas;
+    private float timeAttack = 0.5f;
 
 
     private void Start()
     {
-        rb = GetComponentInChildren<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
     }
     private void Update()
@@ -55,8 +57,14 @@ public class NPCMovement : MonoBehaviour
                 JumpForce();
                 MoveNPC();
             }
+            
+            if (vida <= 0)
+            {
+                isDead = true;
+                dieNPC();
+            }
 
-            dieNPC(vida);
+            vira();
 
             distance = CalcDistance();
 
@@ -85,17 +93,12 @@ public class NPCMovement : MonoBehaviour
             if (distance < attackCooldown)
             {
                 canAttack = true;
+                attackTimer = AttackNPC(attackTimer);
+                time = true;
             }
             else
             {
                 canAttack = false;
-            }
-
-            if (canAttack)
-            {
-                AttackNPC();
-                time = true;
-
             }
 
             if (time)
@@ -106,7 +109,7 @@ public class NPCMovement : MonoBehaviour
         }
         else
         {
-            dieNPC(vida);
+            dieNPC();
         }
     }
 
@@ -114,17 +117,45 @@ public class NPCMovement : MonoBehaviour
     {
         if (collision.CompareTag("floor"))
         {
-            jumpBool = true;
-            animator.SetBool(jumpEHash, jumpBool);
-            animator.SetBool(walkEHash, false);
-            animator.SetBool(attackEHash, false);
-            animator.SetBool(idleEHash, false);
+            jumpBool = true;           
         }
 
         if (collision.CompareTag("AttackFire"))
         {
             tomarDano(5);
         }
+
+        if (collision.CompareTag("damage"))
+        {
+            tomarDano(2);
+            jumpBool = true;
+            if (canAttack)
+            {
+                JumpForce();
+            }
+            MoveNPC();
+            
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("damage"))
+        {
+            timeAttack -= Time.deltaTime;
+            if (timeAttack < 0)
+            {
+                vida -= 2;
+                timeAttack = 0.5f;
+            }
+        }
+
+        if (collision.CompareTag("floor"))
+        {
+            jumpBool = true;
+            JumpForce();
+        }
+
     }
 
     public float GetVida()
@@ -132,26 +163,26 @@ public class NPCMovement : MonoBehaviour
         return vida;
     }
 
-
     public void tomarDano(float dano)
     {
         vida-= dano;
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("floor"))
         {
             jumpBool = false;
-            animator.SetBool(jumpEHash, jumpBool);
-            animator.SetBool(walkEHash, false);
-            animator.SetBool(attackEHash, false);
-            animator.SetBool(idleEHash, true);
         }
-        
     }
+
     private void JumpForce()
     {
-        rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Force);
+        animator.SetBool(jumpEHash, jumpBool);
+        animator.SetBool(walkEHash, false);
+        animator.SetBool(attackEHash, false);
+        animator.SetBool(idleEHash, false); 
+        rb.AddForce(new Vector2(0, jumpForce*Time.deltaTime), ForceMode2D.Impulse);
     }
 
     private int count_jump(int count)
@@ -164,26 +195,20 @@ public class NPCMovement : MonoBehaviour
         return count;
     }
 
-
-    private void dieNPC(float vida)
+    private void dieNPC()
     {
-        if (vida <= 0)
+        animator.SetBool(dieEHash, true);
+        animator.SetBool(jumpEHash, false);
+        animator.SetBool(walkEHash, false);
+        animator.SetBool(attackEHash, false);
+        move = false;
+        
+        timeDeath-=0.02f;
+        if (timeDeath < 0)
         {
-            animator.SetBool(dieEHash, true);
-            animator.SetBool(jumpEHash, false);
-            animator.SetBool(walkEHash, false);
-            animator.SetBool(attackEHash, false);
-            move = false;
-            isDead = true;
-            timeDeath-=Time.deltaTime;
-            if (timeDeath < 0)
-            {
-                OnEnemyDeath(); 
-                recompenas.InstantiateLife();
-                recompenas.InstantiateFoods();
-            }
-            
-            return;
+            OnEnemyDeath(); 
+            recompenas.InstantiateLife();
+            recompenas.InstantiateFoods();
         }
     }
 
@@ -193,20 +218,32 @@ public class NPCMovement : MonoBehaviour
         Enemy.SetActive(false);   
     }
 
-    public void MoveNPC()
+    void vira()
     {
         
         if (transform.position.x < Player.transform.position.x)
         {
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
-            transform.Translate(new Vector2(vel * Time.deltaTime, 0));
-            
         }
         else if (transform.position.x > Player.transform.position.x)
         {
             transform.eulerAngles = new Vector3(0f, 180f, 0f);
-            transform.Translate(new Vector2(vel * Time.deltaTime, 0));
         }
+    }
+
+    public void MoveNPC()
+    {
+        float moveDirection = 0;
+        if (transform.position.x < Player.transform.position.x)
+        {
+            moveDirection += 1;
+        }
+        else if (transform.position.x > Player.transform.position.x)
+        {
+            moveDirection -= 1;
+        }
+
+        rb.velocity = new Vector3(moveDirection*vel, rb.velocity.y, 0f);
     }
     
 
@@ -215,26 +252,29 @@ public class NPCMovement : MonoBehaviour
         distance = Vector2.Distance(Enemy.transform.position, Player.transform.position);
         return distance;
     }
-    private void AttackNPC()
+    private float AttackNPC(float attackTimer)
     {
-        if (canAttack)
+        attackTimer -= 0.02f;
+        if (attackTimer <= 0)
         {
-            attackTimer = attackTimer - Time.deltaTime;
-            if (attackTimer <= 0)
-            {
-                Instantiate(Fire, PontoFire.transform.position, PontoFire.transform.rotation);
-                animator.SetBool(jumpEHash, false);
-                animator.SetBool(walkEHash, false);
-                animator.SetBool(attackEHash, canAttack);
-                animator.SetBool(idleEHash, false);
-                attackTimer = attackCooldown;
-            }
+            animator.SetBool(jumpEHash, false);
+            animator.SetBool(walkEHash, false);
+            animator.SetBool(attackEHash, canAttack);
+            animator.SetBool(idleEHash, false);
+            attackTimer = 6.0f;
+            NewMethod();
         }
+       
+        void NewMethod()
+        {
+            Instantiate(Fire, PontoFire.transform.position, PontoFire.transform.rotation);
+        }
+        return attackTimer;
     }
 
     private float ObjectFire(float timeNew)
     {
-        timeNew = timeNew - Time.deltaTime;
+        timeNew -= 0.0001f;
         if (timeNew <= 0)
         {
             Destroy(Fire);

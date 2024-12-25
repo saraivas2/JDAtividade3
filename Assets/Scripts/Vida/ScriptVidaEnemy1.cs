@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 public class ScriptVidaEnemy1 : MonoBehaviour
 {
-    private NPCMovement1 enemyScript;
+    private NPCMovement enemyScript;
     public GameObject game;
     public Transform barraVida;
     public float valor;
@@ -25,7 +25,7 @@ public class ScriptVidaEnemy1 : MonoBehaviour
     {
         transform.position = game.transform.position - new Vector3(diferenca.x + 0.15f, diferenca.y - 0.3f, diferenca.z);
 
-        enemyScript = GameObject.Find("Enemy2").GetComponent<NPCMovement1>();
+        enemyScript = GameObject.Find("Enemy2").GetComponent<NPCMovement>();
 
         float vida = enemyScript.GetVida();
         float barra = barraVida.transform.localScale.x;

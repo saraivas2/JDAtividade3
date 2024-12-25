@@ -7,11 +7,11 @@ using Unity.VisualScripting;
 
 public class ScriptVidaEdle : MonoBehaviour
 {
-    private player enemyScript;
+    public player enemyScript;
     public GameObject game;
     public Transform barraVida;
-    public float valor;
-    public Vector3 diferenca;
+    private float valor;
+    private Vector3 diferenca;
 
 
     private void Start()
@@ -25,8 +25,6 @@ public class ScriptVidaEdle : MonoBehaviour
     {
         transform.position = game.transform.position - new Vector3(diferenca.x+0.15f, diferenca.y-0.3f, diferenca.z);
         
-        enemyScript = GameObject.Find("Idle_0").GetComponent<player>();
-
         float vida =enemyScript.GetVida();
         float barra = barraVida.transform.localScale.x;
 
