@@ -73,17 +73,23 @@ public class player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("food"))
         {
-            Updamage += 1f;
-            Destroy(collision.gameObject);
+            if (Updamage<20)
+            { 
+                Updamage += 1f;
+                Destroy(collision.gameObject); 
+            }
         }
         if (collision.gameObject.CompareTag("life"))
         {
-            vida += 20;
-            if (vida > 100)
+            if (vida < 100)
             {
-                vida = 100;
+                vida += 20;
+                Destroy(collision.gameObject);
+                if (vida > 100)
+                {
+                    vida = 100;
+                }
             }
-            Destroy(collision.gameObject); 
         }
     }
 
